@@ -67,15 +67,17 @@ bot.command('receta', async ctx => {
         const titulo = await chatGPT(`Dame el título de una receta que pueda cocinar con los siguientes ingredientes: ${ingredientes}`)
 
 
-        const elaboracion = await chatGPT(`Dame la elaboración para la receta con este título: ${título}`)
+        const elaboracion = await chatGPT(`Dame la elaboración para la receta con este título: ${titulo}`)
 
-        googleTTS.getAudioUrl(titulo, {
+        const audioURL = googleTTS.getAudioUrl(titulo, {
             lang: 'es',
             slow: false,
             host: 'http://translate.google.es'
         })
-        ctx.reply(titulo)
-        ctx.reply(elaboracion)
+
+        await ctx.reply(titulo)
+        await ctx.replyWithAudio(audioURL)
+        await ctx.reply(elaboracion)
     } catch (error) {
         ctx.reply('No puedo hacerte esa receta')
     }
