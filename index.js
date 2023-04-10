@@ -1,7 +1,8 @@
 
 const express = require('express');
-const { Telegraf } = require('telegraf')
 const axios = require('axios').default;
+const googleTTS = require('google-tts-api')
+const { Telegraf } = require('telegraf')
 const { Configuration, OpenAIApi } = require('openai');
 const { chatGPT } = require('./utils');
 
@@ -68,6 +69,11 @@ bot.command('receta', async ctx => {
 
         const elaboracion = await chatGPT(`Dame la elaboración para la receta con este título: ${título}`)
 
+        googleTTS.getAudioUrl(titulo, {
+            lang: 'es',
+            slow: false,
+            host: 'http://translate.google.es'
+        })
         ctx.reply(titulo)
         ctx.reply(elaboracion)
     } catch (error) {
